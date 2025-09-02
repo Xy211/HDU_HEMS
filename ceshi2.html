@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家庭理财管理系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 基础样式设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 顶部导航样式 */
+        header {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.8rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        
+        .nav-links a.active, .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* 主标题区域 */
+        .hero {
+            text-align: center;
+            padding: 2.5rem 0;
+            background-color: white;
+            margin-bottom: 2rem;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            color: #3a0ca3;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: #6c757d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* 财务概览卡片 */
+        .financial-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .overview-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        
+        .overview-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-right: 1.5rem;
+        }
+        
+        .income .card-icon {
+            background-color: rgba(76, 201, 240, 0.15);
+            color: #4cc9f0;
+        }
+        
+        .expense .card-icon {
+            background-color: rgba(247, 37, 133, 0.15);
+            color: #f72585;
+        }
+        
+        .balance .card-icon {
+            background-color: rgba(67, 97, 238, 0.15);
+            color: #4361ee;
+        }
+        
+        .savings .card-icon {
+            background-color: rgba(106, 255, 182, 0.15);
+            color: #36b37e;
+        }
+        
+        .card-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-content p {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+        
+        /* 主要内容区域 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #3a0ca3;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title a {
+            font-size: 0.9rem;
+            color: #4361ee;
+            text-decoration: none;
+        }
+        
+        /* 交易表格样式 */
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .transactions-table th,
+        .transactions-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .transactions-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .transactions-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .category {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            background-color: #f0f0f0;
+        }
+        
+        .income-badge {
+            background-color: rgba(76, 201, 240, 0.15);
+            color: #4cc9f0;
+        }
+        
+        .expense-badge {
+            background-color: rgba(247, 37, 133, 0.15);
+            color: #f72585;
+        }
+        
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 1.8rem;
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3a0ca3;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #4361ee;
+            color: #4361ee;
+        }
+        
+        .btn-outline:hover {
+            background-color: #4361ee;
+            color: white;
+        }
+        
+        /* 图表容器 */
+        .chart-container {
+            height: 300px;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .chart-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.2rem;
+        }
+        
+        /* 预算进度条 */
+        .budget-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .budget-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .budget-title {
+            font-weight: 500;
+        }
+        
+        .budget-amount {
+            color: #6c757d;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .progress-low {
+            background-color: #4cc9f0;
+        }
+        
+        .progress-medium {
+            background-color: #ffc53d;
+        }
+        
+        .progress-high {
+            background-color: #f72585;
+        }
+        
+        .budget-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        /* 设置页面样式 */
+        .settings-category {
+            margin-bottom: 2.5rem;
+        }
+        
+        .settings-category h3 {
+            font-size: 1.3rem;
+            color: #3a0ca3;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-info h4 {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        
+        .settings-info p {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #4361ee;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* 页面容器 */
+        .page-container {
+            display: none;
+        }
+        
+        .page-container.active {
+            display: block;
+        }
+        
+        /* 底部区域 */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #6c757d;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .financial-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .overview-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .card-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .settings-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .settings-item .btn {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-wallet"></i>
+                    <span>家庭理财</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="active" data-page="dashboard">首页</a></li>
+                    <li><a href="#" data-page="reports">报表</a></li>
+                    <li><a href="#" data-page="budget">预算</a></li>
+                    <li><a href="#" data-page="settings">设置</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 仪表盘页面 -->
+    <div id="dashboard" class="page-container active">
+        <!-- 主标题区域 -->
+        <section class="hero">
+            <div class="container">
+                <h1>家庭财务概览</h1>
+                <p>全面掌握您的家庭财务状况，实现财务目标</p>
+            </div>
+        </section>
+
+        <!-- 主要内容 -->
+        <div class="container">
+            <!-- 财务概览 -->
+            <div class="financial-overview">
+                <div class="overview-card income">
+                    <div class="card-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>¥15,820</h3>
+                        <p>本月收入</p>
+                    </div>
+                </div>
+                <div class="overview-card expense">
+                    <div class="card-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>¥8,542</h3>
+                        <p>本月支出</p>
+                    </div>
+                </div>
+                <div class="overview-card balance">
+                    <div class="card-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>¥72,364</h3>
+                        <p>当前总资产</p>
+                    </div>
+                </div>
+                <div class="overview-card savings">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>¥7,278</h3>
+                        <p>本月结余</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主要内容区域 -->
+            <div class="main-content">
+                <!-- 交易记录部分 -->
+                <div class="section">
+                    <h2 class="section-title">
+                        最近交易记录
+                        <a href="#">查看全部</a>
+                    </h2>
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>日期</th>
+                                <th>分类</th>
+                                <th>描述</th>
+                                <th>金额</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2023-10-15</td>
+                                <td><span class="category expense-badge">餐饮</span></td>
+                                <td>周末家庭聚餐</td>
+                                <td style="color: #f72585;">-¥268</td>
+                            </tr>
+                            <tr>
+                                <td>2023-10-12</td>
+                                <td><span class="category income-badge">工资</span></td>
+                                <td>十月工资</td>
+                                <td style="color: #4cc9f0;">+¥12,500</td>
+                            </tr>
+                            <tr>
+                                <td>2023-10-10</td>
+                                <td><span class="category expense-badge">住房</span></td>
+                                <td>每月房贷</td>
+                                <td style="color: #f72585;">-¥5,800</td>
+                            </tr>
+                            <tr>
+                                <td>2023-10-08</td>
+                                <td><span class="category expense-badge">交通</span></td>
+                                <td>加油费</td>
+                                <td style="color: #f72585;">-¥400</td>
+                            </tr>
+                            <tr>
+                                <td>2023-10-05</td>
+                                <td><span class="category expense-badge">购物</span></td>
+                                <td>购买秋装</td>
+                                <td style="color: #f72585;">-¥890</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 添加交易表单 -->
+                <div class="section">
+                    <h2 class="section-title">添加新交易</h2>
+                    <form id="transaction-form">
+                        <div class="form-group">
+                            <label for="type">交易类型</label>
+                            <select class="form-control" id="type">
+                                <option value="income">收入</option>
+                                <option value="expense">支出</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">分类</label>
+                            <select class="form-control" id="category">
+                                <option value="salary">工资薪金</option>
+                                <option value="food">餐饮美食</option>
+                                <option value="transport">交通出行</option>
+                                <option value="shopping">购物消费</option>
+                                <option value="housing">住房相关</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">金额 (¥)</label>
+                            <input type="number" class="form-control" id="amount" placeholder="输入金额">
+                        </div>
+                        <div class="form-group">
+                            <label for="date">日期</label>
+                            <input type="date" class="form-control" id="date">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">描述</label>
+                            <input type="text" class="form-control" id="description" placeholder="交易描述">
+                        </div>
+                        <button type="submit" class="btn btn-block">添加交易记录</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 报表页面 -->
+    <div id="reports" class="page-container">
+        <section class="hero">
+            <div class="container">
+                <h1>财务报表分析</h1>
+                <p>可视化您的财务数据，深入了解收支情况</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="financial-overview">
+                <div class="overview-card income">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>收入分析</h3>
+                        <p>按类别查看收入分布</p>
+                    </div>
+                </div>
+                <div class="overview-card expense">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>支出分析</h3>
+                        <p>按类别查看支出分布</p>
+                    </div>
+                </div>
+                <div class="overview-card balance">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>月度趋势</h3>
+                        <p>查看月度收支变化</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="section">
+                    <h2 class="section-title">
+                        支出类别分布
+                        <select class="form-control" style="width: auto; display: inline-block; padding: 0.3rem;">
+                            <option>本月</option>
+                            <option>上个月</option>
+                            <option>本季度</option>
+                            <option>本年度</option>
+                        </select>
+                    </h2>
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-pie" style="font-size: 2rem; margin-right: 10px;"></i>
+                            支出类别饼图将显示在这里
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">
+                        月度收支趋势
+                        <select class="form-control" style="width: auto; display: inline-block; padding: 0.3rem;">
+                            <option>最近6个月</option>
+                            <option>最近12个月</option>
+                            <option>自定义范围</option>
+                        </select>
+                    </h2>
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-line" style="font-size: 2rem; margin-right: 10px;"></i>
+                            月度趋势折线图将显示在这里
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">支出明细表</h2>
+                <table class="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>类别</th>
+                            <th>预算</th>
+                            <th>实际支出</th>
+                            <th>差异</th>
+                            <th>占比</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="category expense-badge">住房</span></td>
+                            <td>¥6,000</td>
+                            <td>¥5,800</td>
+                            <td style="color: #4cc9f0;">-¥200</td>
+                            <td>42%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="category expense-badge">食品</span></td>
+                            <td>¥2,500</td>
+                            <td>¥2,680</td>
+                            <td style="color: #f72585;">+¥180</td>
+                            <td>19%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="category expense-badge">交通</span></td>
+                            <td>¥1,200</td>
+                            <td>¥1,050</td>
+                            <td style="color: #4cc9f0;">-¥150</td>
+                            <td>8%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="category expense-badge">娱乐</span></td>
+                            <td>¥800</td>
+                            <td>¥920</td>
+                            <td style="color: #f72585;">+¥120</td>
+                            <td>7%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="category expense-badge">其他</span></td>
+                            <td>¥1,000</td>
+                            <td>¥1,092</td>
+                            <td style="color: #f72585;">+¥92</td>
+                            <td>8%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预算页面 -->
+    <div id="budget" class="page-container">
+        <section class="hero">
+            <div class="container">
+                <h1>预算管理</h1>
+                <p>设置和管理您的预算，控制不必要的支出</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="financial-overview">
+                <div class="overview-card income">
+                    <div class="card-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>¥13,500</h3>
+                        <p>月度总预算</p>
+                    </div>
+                </div>
+                <div class="overview-card expense">
+                    <div class="card-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>¥8,542</h3>
+                        <p>本月已支出</p>
+                    </div>
+                </div>
+                <div class="overview-card balance">
+                    <div class="card-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>¥4,958</h3>
+                        <p>剩余预算</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="section">
+                    <h2 class="section-title">
+                        预算执行情况
+                        <a href="#">编辑预算</a>
+                    </h2>
+                    
+                    <div class="budget-item">
+                        <div class="budget-header">
+                            <div class="budget-title">住房</div>
+                            <div class="budget-amount">¥5,800 / ¥6,000</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-low" style="width: 78%"></div>
+                        </div>
+                        <div class="budget-footer">
+                            <div class="budget-spent">已支出: ¥5,800</div>
+                            <div class="budget-left">剩余: ¥200</div>
+                        </div>
+                    </div>
+                    
+                    <div class="budget-item">
+                        <div class="budget-header">
+                            <div class="budget-title">食品</div>
+                            <div class="budget-amount">¥2,680 / ¥2,500</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-high" style="width: 107%"></div>
+                        </div>
+                        <div class="budget-footer">
+                            <div class="budget-spent">已支出: ¥2,680</div>
+                            <div class="budget-left" style="color: #f72585;">超支: ¥180</div>
+                        </div>
+                    </div>
+                    
+                    <div class="budget-item">
+                        <div class="budget-header">
+                            <div class="budget-title">交通</div>
+                            <div class="budget-amount">¥1,050 / ¥1,200</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-low" style="width: 70%"></div>
+                        </div>
+                        <div class="budget-footer">
+                            <div class="budget-spent">已支出: ¥1,050</div>
+                            <div class="budget-left">剩余: ¥150</div>
+                        </div>
+                    </div>
+                    
+                    <div class="budget-item">
+                        <div class="budget-header">
+                            <div class="budget-title">娱乐</div>
+                            <div class="budget-amount">¥920 / ¥800</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-high" style="width: 115%"></div>
+                        </div>
+                        <div class="budget-footer">
+                            <div class="budget-spent">已支出: ¥920</div>
+                            <div class="budget-left" style="color: #f72585;">超支: ¥120</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">添加新预算</h2>
+                    <form id="budget-form">
+                        <div class="form-group">
+                            <label for="budget-category">预算类别</label>
+                            <select class="form-control" id="budget-category">
+                                <option value="">选择类别</option>
+                                <option value="housing">住房</option>
+                                <option value="food">食品</option>
+                                <option value="transport">交通</option>
+                                <option value="entertainment">娱乐</option>
+                                <option value="shopping">购物</option>
+                                <option value="healthcare">医疗保健</option>
+                                <option value="education">教育</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget-amount">预算金额 (¥)</label>
+                            <input type="number" class="form-control" id="budget-amount" placeholder="输入预算金额">
+                        </div>
+                        <div class="form-group">
+                            <label for="budget-period">预算周期</label>
+                            <select class="form-control" id="budget-period">
+                                <option value="monthly">月度</option>
+                                <option value="quarterly">季度</option>
+                                <option value="yearly">年度</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-block">保存预算</button>
+                    </form>
+
+                    <div style="margin-top: 2rem;">
+                        <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">预算建议</h3>
+                        <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                            <p style="margin-bottom: 0.5rem;"><i class="fas fa-lightbulb" style="color: #ffc53d;"></i> 您的食品支出超出预算7%，建议减少外出就餐次数。</p>
+                            <p style="margin-bottom: 0.5rem;"><i class="fas fa-lightbulb" style="color: #ffc53d;"></i> 娱乐支出超出预算15%，建议制定更严格的娱乐预算。</p>
+                            <p><i class="fas fa-lightbulb" style="color: #ffc53d;"></i> 交通支出比预算少30%，可以考虑将剩余预算分配到超支类别。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置页面 -->
+    <div id="settings" class="page-container">
+        <section class="hero">
+            <div class="container">
+                <h1>系统设置</h1>
+                <p>个性化您的财务管理体验</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="main-content">
+                <div class="section">
+                    <div class="settings-category">
+                        <h3>账户设置</h3>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>家庭成员管理</h4>
+                                <p>添加或移除家庭成员账户</p>
+                            </div>
+                            <button class="btn btn-outline btn-sm">管理</button>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>修改密码</h4>
+                                <p>更新您的登录密码</p>
+                            </div>
+                            <button class="btn btn-outline btn-sm">修改</button>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>账户偏好</h4>
+                                <p>设置默认货币、语言等</p>
+                            </div>
+                            <button class="btn btn-outline btn-sm">设置</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-category">
+                        <h3>通知设置</h3>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>支出提醒</h4>
+                                <p>当支出接近预算限制时接收通知</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>月度报告</h4>
+                                <p>每月通过电子邮件接收财务报告</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>账单提醒</h4>
+                                <p>在账单到期前接收通知</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="settings-category">
+                        <h3>数据管理</h3>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>导出数据</h4>
+                                <p>将财务数据导出为CSV或Excel格式</p>
+                            </div>
+                            <button class="btn btn-outline btn-sm">导出</button>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>数据备份</h4>
+                                <p>创建数据备份以防止数据丢失</p>
+                            </div>
+                            <button class="btn btn-outline btn-sm">备份</button>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>数据恢复</h4>
+                                <p>从之前的备份中恢复数据</p>
+                            </div>
+                            <button class="btn btn-outline btn-sm">恢复</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-category">
+                        <h3>个性化</h3>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>主题颜色（待开发）</h4>
+                                <p>更改应用程序的主题颜色</p>
+                            </div>
+                            <div style="display: flex;">
+                                <div style="width: 24px; height: 24px; background: #4361ee; border-radius: 50%; margin-right: 8px; border: 2px solid #fff; box-shadow: 0 0 0 2px #4361ee;"></div>
+                                <div style="width: 24px; height: 24px; background: #36b37e; border-radius: 50%; margin-right: 8px;"></div>
+                                <div style="width: 24px; height: 24px; background: #ffab00; border-radius: 50%; margin-right: 8px;"></div>
+                                <div style="width: 24px; height: 24px; background: #ff5630; border-radius: 50%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>默认主页</h4>
+                                <p>设置登录后的默认显示页面</p>
+                            </div>
+                            <select class="form-control" style="width: auto; padding: 0.3rem 0.8rem;">
+                                <option>仪表盘</option>
+                                <option>报表</option>
+                                <option>预算</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-category">
+                        <h3>关于</h3>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>版本信息</h4>
+                                <p>当前版本: 2.1.0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>帮助中心</h4>
+                                <p>查看使用指南和常见问题</p>
+                            </div>
+                            <button class="btn btn-outline btn-sm">查看</button>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>隐私政策</h4>
+                                <p>了解我们如何保护您的数据</p>
+                            </div>
+                            <button class="btn btn-outline btn-sm">查看</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部区域 -->
+    <footer>
+        <div class="container">
+            <p>© 2023 家庭理财管理系统 | 设计用于帮助您更好地管理家庭财务</p>
+        </div>
+    </footer>
+
+    <script>
+        // 页面切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const pages = document.querySelectorAll('.page-container');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 更新导航激活状态
+                    navLinks.forEach(item => item.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应页面
+                    const pageId = this.getAttribute('data-page');
+                    pages.forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === pageId) {
+                            page.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // 表单提交处理
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('功能演示：表单已提交（实际应用中这里会处理数据）');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
